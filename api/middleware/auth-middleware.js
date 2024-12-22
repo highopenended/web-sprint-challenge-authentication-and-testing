@@ -5,10 +5,10 @@ function validateUserData(req, res, next) {
     let { username, password } = req.body;
 
     if (!username || typeof username !== "string") {
-        return res.status(400).json({ message: "Name is required and must be a string" });
+        return res.status(400).json({ message: "username and password required" });
     }
     if (!password || typeof password !== "string") {
-        return res.status(400).json({ message: "Password is required and must be a string" });
+        return res.status(400).json({ message: "username and password required" });
     }
 
     username = username.trim();
