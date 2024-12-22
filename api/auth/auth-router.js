@@ -22,8 +22,26 @@ router.post("/register", validateUserData, usernameTaken, async (req, res) => {
         console.error(error);
         res.status(500).json({ message: "Server error" });
     }
+});
 
-    /*
+router.post("/login", validateUserData, userExists, (req, res) => {
+    const { id, username, password } = req.user;
+
+    // Generate JWT Token
+    const token = jwt.sign({ id, username, password }, process.env.JWT_SECRET || "default_secret", {
+        expiresIn: "1h",
+    });
+
+    // Respond with success message and token
+    res.status(200).json({
+        message: `welcome, ${username}`,
+        token,
+    });
+});
+
+module.exports = router;
+
+ /*
     IMPLEMENT
     You are welcome to build additional middlewares to help with the endpoint's functionality.
     DO NOT EXCEED 2^8 ROUNDS OF HASHING!
@@ -48,27 +66,3 @@ router.post("/register", validateUserData, usernameTaken, async (req, res) => {
     4- On FAILED registration due to the `username` being taken,
       the response body should include a string exactly as follows: "username taken".
   */
-});
-
-router.post("/login", validateUserData, userExists, (req, res) => {
-    const { id, username, password } = req.user;
-
-    // Generate JWT Token
-    const token = jwt.sign({ id, username, password }, process.env.JWT_SECRET || "default_secret", {
-        expiresIn: "1h",
-    });
-
-    // Respond with success message and token
-    res.status(200).json({
-        message: `welcome, ${username}`,
-        token,
-    });
-
-});
-
-module.exports = router;
-
-// // const { usernameDecoded, passwordDecoded } = req.decodedUser;
-
-// console.log(username, " : ", password)
-// res.end("implement login, please!");

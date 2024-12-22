@@ -8,15 +8,16 @@ module.exports = (req, res, next) => {
 
 
     if (!token) {
-        return res.status(401).json("token required");
+        return res.status(401).json({message:"token required"});
     }
 
     // Verify the token
     jwt.verify(token, process.env.JWT_SECRET || 'default_secret', (err, decoded) => {
         if (err) {
-            return res.status(401).json("token invalid");
+            return res.status(401).json({message:"token invalid"});
         }
-        req.decodedUser = decoded; 
+        req.decodedUser = decoded;
+        req.token=token
         next();
     });
 };
