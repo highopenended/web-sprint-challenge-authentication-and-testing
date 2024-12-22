@@ -16,8 +16,10 @@ router.post("/register", validateUserData, usernameTaken, async (req, res) => {
             username,
             password: hashedPassword,
         };
-        await db("users").insert(newUser);
-        res.status(201).json(newUser);
+        const [id] = await db("users").insert(newUser);
+
+
+        res.status(201).json({...newUser, id});
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: "Server error" });
