@@ -1,7 +1,22 @@
 const router = require('express').Router();
+const {validateUserData} = require('../middleware/auth-middleware')
+const db = require('../../data/dbConfig')
 
-router.post('/register', (req, res) => {
+
+
+
+router.get('/register',async (req,res)=>{
+  const users=await db('users');
+  res.status(200).json(users)
+})
+
+router.post('/register', validateUserData,(req, res) => {
   res.end('implement register, please!');
+
+  
+
+
+
   /*
     IMPLEMENT
     You are welcome to build additional middlewares to help with the endpoint's functionality.
@@ -27,10 +42,19 @@ router.post('/register', (req, res) => {
     4- On FAILED registration due to the `username` being taken,
       the response body should include a string exactly as follows: "username taken".
   */
+
+
+
+
 });
 
 router.post('/login', (req, res) => {
   res.end('implement login, please!');
+
+
+
+
+
   /*
     IMPLEMENT
     You are welcome to build additional middlewares to help with the endpoint's functionality.
