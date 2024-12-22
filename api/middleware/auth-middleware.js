@@ -51,6 +51,4 @@ async function correctPassword(req, res, next) {
 }
 
 
-
-
 module.exports = { validateUserData, usernameTaken, userExists,correctPassword };
