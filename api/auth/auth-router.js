@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const bcrypt = require("bcryptjs");
 const { validateUserData, checkUserExists } = require("../middleware/auth-middleware");
+const {restricted}=require("../middleware/restricted")
 const db = require("../../data/dbConfig");
 
 
@@ -52,6 +53,8 @@ router.post("/register", validateUserData, checkUserExists, async (req, res) => 
 });
 
 router.post("/login", (req, res) => {
+    // const { username, password } = req.user;
+    // const { usernameDecoded, passwordDecoded } = req.decodedUser;
     res.end("implement login, please!");
 
     /*
