@@ -1,12 +1,12 @@
 const router = require("express").Router();
 const bcrypt = require("bcryptjs");
-const { validateUserData, checkUserExists } = require("../middleware/auth-middleware");
-const {restricted}=require("../middleware/restricted")
+const { validateUserData, usernameTaken, userExists } = require("../middleware/auth-middleware");
+
 const db = require("../../data/dbConfig");
 
 
 
-router.post("/register", validateUserData, checkUserExists, async (req, res) => {
+router.post("/register", validateUserData, usernameTaken, async (req, res) => {
     const { username, password } = req.user;
     try {
         // Hash the password with bcryptjs
@@ -52,9 +52,11 @@ router.post("/register", validateUserData, checkUserExists, async (req, res) => 
   */
 });
 
-router.post("/login", (req, res) => {
-    // const { username, password } = req.user;
+router.post("/login",validateUserData,userExists,(req, res) => {
+    const { username, password } = req.user;
     // const { usernameDecoded, passwordDecoded } = req.decodedUser;
+
+    console.log(username, " : ", password)
     res.end("implement login, please!");
 
     /*

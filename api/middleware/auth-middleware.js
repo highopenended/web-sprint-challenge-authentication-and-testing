@@ -17,13 +17,29 @@ function validateUserData(req, res, next) {
     next();
 }
 
-async function checkUserExists(req, res, next) {
-    console.log("Checking if user exists... : ", req.user.username);
+async function usernameTaken(req, res, next) {
+    console.log("Checking if username is taken... : ", req.user.username);
     const users = await db("users");
     const userExists = users.find((user) => user.username === req.user.username);
+
     if (userExists) {
         return res.status(400).json("username taken");
     }
     next();
 }
-module.exports = { validateUserData, checkUserExists };
+
+async function userExists(req, res, next) {
+    const {username}=req.user
+    const users = await db("users");
+    console.log("Checking if user exists... : ", username);
+    const userExists = users.find((user) => user.username === username);
+    if (!userExists) {
+        return res.status(400).json("invalid credentials");
+    }
+    req.user = await db('users').where({ username }).first();
+    next();
+}
+
+
+
+module.exports = { validateUserData, usernameTaken,userExists };
