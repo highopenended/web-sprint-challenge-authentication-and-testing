@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const { validateUserData, usernameTaken, userExists } = require("../middleware/auth-middleware");
+const { validateUserData, usernameTaken, userExists,correctPassword } = require("../middleware/auth-middleware");
 const db = require("../../data/dbConfig");
 
 router.post("/register", validateUserData, usernameTaken, async (req, res) => {
@@ -26,7 +26,7 @@ router.post("/register", validateUserData, usernameTaken, async (req, res) => {
     }
 });
 
-router.post("/login", validateUserData, userExists, (req, res) => {
+router.post("/login", validateUserData, userExists,correctPassword, (req, res) => {
     const { id, username, password } = req.user;
 
     // Generate JWT Token

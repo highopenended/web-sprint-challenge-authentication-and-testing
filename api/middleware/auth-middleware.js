@@ -1,4 +1,6 @@
+const bcrypt=require('bcryptjs')
 const db = require("../../data/dbConfig");
+
 
 function validateUserData(req, res, next) {
     console.log("Validating User Data");
@@ -37,4 +39,18 @@ async function userExists(req, res, next) {
     next();
 }
 
-module.exports = { validateUserData, usernameTaken, userExists };
+async function correctPassword(req, res, next) {
+    const users = await db("users");
+    const checkPass = req.body.password
+    const hashPass = await users.find((user) => user.username === req.user.username).password;
+    const passwordMatches=await bcrypt.compareSync(checkPass,hashPass)
+    if (!passwordMatches) {
+        return res.status(401).json({ message: "invalid password" });
+    }
+    next();
+}
+
+
+
+
+module.exports = { validateUserData, usernameTaken, userExists,correctPassword };
